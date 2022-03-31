@@ -7,7 +7,7 @@ class Invite extends StatefulWidget {
   State<Invite> createState() => _InviteState();
 }
 
-class _InviteState extends State<Invite> {
+class _InviteState extends State<Invite> { 
   List call = [
     {
       "title": "Ananya",
@@ -40,6 +40,7 @@ class _InviteState extends State<Invite> {
       "trailing": Icons.call,
     },
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,23 +48,23 @@ class _InviteState extends State<Invite> {
         title: Text("Invite a friend"),
         leading: Icon(
           Icons.arrow_back,
-
         ),
         actions: [
           Icon(Icons.arrow_back)
         ],
       ),
-      body:ListView.builder(
+      body: ListView.builder(
         shrinkWrap: true,
         itemCount: call.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(call[index]["title"]),
-          subtitle: Text(call[index]["subtitle"]),
-          leading: CircleAvatar(
-            backgroundImage: AssetImage(call[index]["image"]),
-          ),
-          trailing: Icon(call[index]["trailing"],color: Colors.teal,),
-        ),
+        itemBuilder: (context, index) =>
+            ListTile(
+              title: Text(call[index]["title"]),
+              subtitle: Text(call[index]["subtitle"]),
+              leading: CircleAvatar(
+                backgroundImage: AssetImage(call[index]["image"]),
+              ),
+              trailing: Icon(call[index]["trailing"], color: Colors.teal,),
+            ),
       ),
     );
   }

@@ -1,58 +1,66 @@
-import 'package:adityanarayanswain_v6015/main.dart';
-import 'package:adityanarayanswain_v6015/mainscreen/WhatsApp.dart';
+import 'package:adityanarayanswain_v6015/constants/ColorConstants.dart';
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'localization/localisationDelegate.dart';
-List<CameraDescription> cameras=[];
-void main()
+import 'Localization/app_delegate.dart';
+import 'Localization/applicaton.dart';
+import 'loginwhatsapp/welcome.dart';
 
-  async{
+List<CameraDescription> cameras = [];
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
 
-    WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  print("cameras$cameras");
 
-    cameras = await availableCameras();
   runApp(const MyApp());
 }
 
-
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late AppTranslationsDelegate _newLocaleDelegate;
+
+  @override
+  void initState() {
+    _newLocaleDelegate = AppTranslationsDelegate();
+    application.onLocaleChanged = onLocaleChange;
+    super.initState();
+  }
+
+  void onLocaleChange(Locale locale) {
+    setState(() {
+      _newLocaleDelegate = AppTranslationsDelegate(newLocale: locale);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      // locale: _locale,
-      // supportedLocales: [
-      //   Locale('En',''),
-      //   Locale('Fr',''),
-      // ],
       localizationsDelegates: [
-        DefaultMaterialLocalizations.delegate,
-        DefaultWidgetsLocalizations.delegate,
-        LocalizationDelegate()
+        _newLocaleDelegate,
+        AppTranslationsDelegate(),
+        //provides localised strings
+        GlobalMaterialLocalizations.delegate,
+        //provides RTL support
+        GlobalWidgetsLocalizations.delegate,
       ],
-      // localeResolutionCallback: (locale, supportedLocales) {
-      //   for (var supportedLocale in supportedLocales) {
-      //     if (supportedLocale.languageCode == locale?.languageCode) {
-      //       _locale = supportedLocale;
-      //       return supportedLocale;
-      //     }
-      //   }
-      //   return supportedLocales.first;
-      // },
-      theme: ThemeData(
-
-
-        primarySwatch: Colors.blue,
+      supportedLocales: application.supportedLocales(),
+      title: '',
+      theme: ThemeData(primaryColor: AppColors.teal_dark_green),
+      home: const WelcomeScreen(
+        title: '',
       ),
-      home: const WhatsApp(title: '',),
     );
   }
 }
-
-

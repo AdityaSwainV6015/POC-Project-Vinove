@@ -1,4 +1,4 @@
-import 'package:camera/camera.dart';
+ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -38,3 +38,4 @@ class _CameraScreenState extends State<CameraScreen> {
     return CameraPreview(controller);
   }
 }
+

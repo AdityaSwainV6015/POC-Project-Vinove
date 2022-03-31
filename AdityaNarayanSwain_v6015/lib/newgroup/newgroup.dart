@@ -1,14 +1,15 @@
-import 'package:adityanarayanswain_v6015/constants/ColorConstants.dart';
 import 'package:flutter/material.dart';
 
-class Contacts extends StatefulWidget {
-  const Contacts({Key? key}) : super(key: key);
+import '../constants/ColorConstants.dart';
+
+class NewGroup extends StatefulWidget {
+  const NewGroup({Key? key}) : super(key: key);
 
   @override
-  State<Contacts> createState() => _ContactsState();
+  State<NewGroup> createState() => _NewGroupState();
 }
 
-class _ContactsState extends State<Contacts> {
+class _NewGroupState extends State<NewGroup> {
   List chats = [
     {
       "title": "Aditya Narayan Swain",
@@ -46,7 +47,6 @@ class _ContactsState extends State<Contacts> {
       "image": "images/img_6.png",
     },
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,18 +67,14 @@ class _ContactsState extends State<Contacts> {
             // IconButton(icon: const Icon(Icons.search), onPressed: () {}),
           ],
         ),
-
       ),
       body: ListView.builder(
         shrinkWrap: true,
-
         itemCount: chats.length,
         itemBuilder: (context, index) => ListTile(
           // onTap: (){
           //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>conta()));
           // },
-
-
 
           title: Text(chats[index]["title"]),
           subtitle: Text(chats[index]["subtitle"]),

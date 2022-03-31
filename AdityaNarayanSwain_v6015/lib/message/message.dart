@@ -1,135 +1,260 @@
+import 'package:adityanarayanswain_v6015/constants/ColorConstants.dart';
 import 'package:flutter/material.dart';
-import 'package:bubble/bubble.dart';
-import 'package:flutter/scheduler.dart';
 
-class MessagePage extends StatefulWidget {
-  MessagePage({required key}) : super(key: key);
+import 'chatmessage.dart';
+
+
+class ChatScreen extends StatefulWidget {
+  final String name;
+  const ChatScreen({Key? key, required this.name}) : super(key: key);
 
   @override
-  _MessagePageState createState() => _MessagePageState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _MessagePageState extends State<MessagePage> {
-  static const styleSender = BubbleStyle(
-    margin: const BubbleEdges.only(top: 10),
-    alignment: Alignment.topLeft,
-    nip: BubbleNip.leftTop,
-    showNip: false,
-  );
-  static const styleReceiver = BubbleStyle(
-    margin: const BubbleEdges.only(top: 10),
-    alignment: Alignment.topRight,
-    nip: BubbleNip.rightTop,
-    color: const Color.fromRGBO(225, 255, 199, 1),
-    showNip: false,
-  );
-  ScrollController _myController = ScrollController();
+class _ChatScreenState extends State<ChatScreen> {
+
+  TextEditingController _controller = new TextEditingController();
+  String message = "";
+  bool _isWritting = false;
+  void callEmoji() {
+    print('Emoji Icon Pressed...');
+  }
+
+  void callAttachFile() {
+    print('Attach File Icon Pressed...');
+  }
+
+  void callCamera() {
+    print('Camera Icon Pressed...');
+  }
+
+  void callVoice() {
+    print('Voice Icon Pressed...');
+  }
+  void sendMessage() {
+    print('sending message...');
+    message=_controller.text;
+    messages.add(
+      ChatMessage(messageContent: message, messageType: "sender"),
+    );
+    _controller.text = "";
+    setState(() {});
+
+  }
+
+
+  Widget moodIcon() {
+    return IconButton(
+        icon: const Icon(
+          Icons.mood,
+          color: Color(0xFF00BFA5),
+        ),
+        onPressed: () => callEmoji());
+  }
+
+  Widget attachFile() {
+    return IconButton(
+      icon: const Icon(Icons.attach_file, color: Color(0xFF00BFA5)),
+      onPressed: () => callAttachFile(),
+    );
+  }
+
+  Widget camera() {
+    return IconButton(
+      icon: const Icon(Icons.photo_camera, color: Color(0xFF00BFA5)),
+      onPressed: () => callCamera(),
+    );
+  }
+
+  Widget voiceIcon() {
+    return const Icon(
+      Icons.keyboard_voice,
+      color: Colors.white,
+    );
+  }
+
+
+  Widget sendIcon() {
+    return const Icon(
+      Icons.send,
+
+      color: Colors.white,
+    );
+  }
+
+  List<ChatMessage> messages = [
+    ChatMessage(messageContent: "Hello, Will", messageType: "sender"),
+
+  ];
+
+
+
+  Widget buildInputArea(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(12.0),
+      height: 60,
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(35.0),
+                boxShadow: const [
+                  BoxShadow(
+                      offset: Offset(0, 2), blurRadius: 7, color: Colors.grey)
+                ],
+              ),
+              child: Row(
+                children: [
+                  moodIcon(),
+                  Expanded(
+                    child: TextField(
+                      controller:_controller,
+
+                      decoration: InputDecoration(
+                          hintText: "Message",
+                          hintStyle: TextStyle(color: Color(0xFF00BFA5)),
+                          border: InputBorder.none),
+                    ),
+
+                  ),
+                  attachFile(),
+                  camera(),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Container(
+            padding: const EdgeInsets.all(15.0),
+            decoration: const BoxDecoration(
+                color: Color(0xFF00BFA5), shape: BoxShape.circle),
+            child: InkWell(
+              child: sendIcon(),
+              onTap: () => sendMessage(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  // Widget buildInputArea(BuildContext context) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: Row(
+  //       children: <Widget>[
+  //         Expanded(
+  //           child: TextField(
+  //             cursorColor: Colors.red,
+  //             keyboardType: TextInputType.multiline,
+  //             controller: _controller,
+  //             decoration: InputDecoration(
+  //                 hintText: 'Message',
+  //                 contentPadding: const EdgeInsets.all(15),
+  //                 border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(30))),
+  //             onChanged: (value) {
+  //               message = value;
+  //
+  //               // do something
+  //             },
+  //           ),
+  //         ),
+  //         RawMaterialButton(
+  //           onPressed: () {
+  //             messages.add(
+  //               ChatMessage(messageContent: message, messageType: "sender"),
+  //             );
+  //             _controller.text = "";
+  //             setState(() {});
+  //           },
+  //           elevation: 2.0,
+  //           fillColor: ColorConstants.teal_green_light,
+  //           child: Icon(
+  //             Icons.send,
+  //             size: 20,
+  //             color: ColorConstants.light_grey,
+  //           ),
+  //           padding: EdgeInsets.all(10.0),
+  //           shape: CircleBorder(),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget buildMessageList() {
+    return ListView.builder(
+      itemCount: messages.length,
+      shrinkWrap: true,
+      padding: EdgeInsets.only(top: 10, bottom: 100),
+      itemBuilder: (context, index) {
+        return Container(
+          padding: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+          child: Align(
+            alignment: (messages[index].messageType == "receiver"
+                ? Alignment.topLeft
+                : Alignment.topRight),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: (messages[index].messageType == "receiver"
+                    ? Colors.white
+                    : Colors.green[100]),
+              ),
+              padding: EdgeInsets.all(16),
+              child: Text(
+                messages[index].messageContent,
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      _myController.jumpTo(_myController.position.maxScrollExtent);
-    });
-    return ListView(
-      controller: _myController,
-      children: [
-        Bubble(
-          alignment: Alignment.center,
-          color: const Color.fromRGBO(212, 234, 244, 1),
-          child: const Text('TODAY',
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 11)),
+    return Scaffold(
+      backgroundColor: AppColors.light_geen,
+      appBar: AppBar(
+
+        backgroundColor: AppColors.teal_dark_green,
+        actions: [
+          Icon(Icons.videocam_rounded),
+          SizedBox(
+            width: 25,
+          ),
+          Icon(Icons.call),
+          SizedBox(
+            width: 25,
+          ),
+          Icon(Icons.more_vert),
+        ],
+        title: Row(
+          children: [
+            CircleAvatar(
+              child: Icon(Icons.person),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(widget.name),
+          ],
         ),
-        Bubble(
-          style: styleReceiver,
-          child: const Text('Hello, World!', textAlign: TextAlign.right),
-          showNip: true,
-        ),
-        Bubble(
-          style: styleReceiver,
-          child: const Text('How are you?', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleSender,
-          child: const Text('Hi, developer!'),
-          showNip: true,
-        ),
-        Bubble(
-          style: styleSender,
-          child: const Text('Well, see for yourself'),
-        ),
-        Bubble(
-          style: styleReceiver,
-          showNip: true,
-          child: const Text('Hello, World!', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleReceiver,
-          child: const Text('How are you?', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleSender,
-          showNip: true,
-          child: const Text('Hi, developer!'),
-        ),
-        Bubble(
-          style: styleSender,
-          child: const Text('Well, see for yourself'),
-        ),
-        Bubble(
-          style: styleReceiver,
-          showNip: true,
-          child: const Text('Hello, World!', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleReceiver,
-          child: const Text('How are you?', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleSender,
-          showNip: true,
-          child: const Text('Hi, developer!'),
-        ),
-        Bubble(
-          style: styleSender,
-          child: const Text('Well, see for yourself'),
-        ),
-        Bubble(
-          style: styleReceiver,
-          showNip: true,
-          child: const Text('Hello, World!', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleReceiver,
-          child: const Text('How are you?', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleSender,
-          showNip: true,
-          child: const Text('Hi, developer!'),
-        ),
-        Bubble(
-          style: styleSender,
-          child: const Text('Well, see for yourself'),
-        ),
-        Bubble(
-          style: styleReceiver,
-          showNip: true,
-          child: const Text('Hello, World!', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleReceiver,
-          child: const Text('How are you?', textAlign: TextAlign.right),
-        ),
-        Bubble(
-          style: styleSender,
-          showNip: true,
-          child: const Text('Hi, developer!'),
-        ),
-        Bubble(
-          style: styleSender,
-          child: const Text('Well, see for yourself End'),
-        ),
-        //
-      ],
+      ),
+      body: Stack(
+        children: [
+          buildMessageList(),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                  color: Colors.white, child: buildInputArea(context))),
+        ],
+      ),
     );
   }
 }

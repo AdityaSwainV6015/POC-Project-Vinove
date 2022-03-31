@@ -1,14 +1,11 @@
+import 'package:adityanarayanswain_v6015/Localization/apptranslation.dart';
 import 'package:adityanarayanswain_v6015/calls_list/Callmainpage.dart';
 import 'package:adityanarayanswain_v6015/Camera_list/CameraPage.dart';
 import 'package:adityanarayanswain_v6015/chats_list/Chatsmainscreen.dart';
-import 'package:adityanarayanswain_v6015/seetingd/srttingscreen.dart';
 import 'package:adityanarayanswain_v6015/status_list/Statusmain.dart';
-
 import 'package:flutter/material.dart';
-
+import '../Settings/srttingscreen.dart';
 import '../constants/ColorConstants.dart';
-import '../constants/Stringcontsnts.dart';
-import '../localization/english.dart';
 
 class WhatsApp extends StatefulWidget {
   const WhatsApp({Key? key, required String title}) : super(key: key);
@@ -19,7 +16,7 @@ class WhatsApp extends StatefulWidget {
 
 class _WhatsAppState extends State<WhatsApp> {
   late TabController _tabController;
-  int _selectedIndex=0;
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -29,14 +26,58 @@ class _WhatsAppState extends State<WhatsApp> {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: AppColors.teal_dark_green,
           actions: [
             Icon(Icons.search),
             _selectedIndex == 1
                 ? PopupMenuButton(
-                icon: const Icon(Icons.more_vert),
+                    icon: const Icon(Icons.more_vert),
+                    onSelected: (result) {
+                      if (result == 6) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingsScreen()),
+                        );
+                      }
+                    },
+                    itemBuilder: (context) => [
+                          PopupMenuItem(
+                            child: Text(
+                                AppTranslations.of(context)!.text("menu_1_1")),
+                            value: 1,
+                          ),
+                          PopupMenuItem(
+                            child: Text(
+                                AppTranslations.of(context)!.text("menu_1_2")),
+                            value: 2,
+                          ),
+                          PopupMenuItem(
+                            child: Text(
+                                AppTranslations.of(context)!.text("menu_1_3")),
+                            value: 3,
+                          ),
+                          PopupMenuItem(
+                            child: Text(
+                                AppTranslations.of(context)!.text("menu_1_4")),
+                            value: 4,
+                          ),
+                          PopupMenuItem(
+                            child: Text(
+                                AppTranslations.of(context)!.text("menu_1_5")),
+                            value: 5,
+                          ),
+                          PopupMenuItem(
+                            child: Text(
+                                AppTranslations.of(context)!.text("menu_1_6")),
+                            value: 6,
+                          ),
+                        ])
+                : _selectedIndex == 2
+                    ? PopupMenuButton(
                 onSelected: (result) {
-                  if (result == 6) {
+                  if (result == 2) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -44,65 +85,48 @@ class _WhatsAppState extends State<WhatsApp> {
                     );
                   }
                 },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-
-                    child: Text(EnglishText.of(context)!.NewGroup ),
-                    value: 1,
-                  ),
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.NewBroadcast),
-                    value: 2,
-                  ),
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.LinkedDevice),
-                    value: 3,
-                  ),
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.StarredMessages),
-                    value: 4,
-                  ),
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.Payments),
-                    value: 5,
-                  ),
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.Settings),
-                    value: 6,
-                  ),
-                ])
-                : _selectedIndex == 2
-                ? PopupMenuButton(
-                icon: Icon(Icons.more_vert),
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.StatusPrivacy),
-                    value: 1,
-                  ),
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.Settings),
-                    value: 2,
-                  )
-                ])
-                : PopupMenuButton(
-                icon: Icon(Icons.more_vert),
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.ClearCallLogs),
-                    value: 1,
-                  ),
-                  PopupMenuItem(
-                    child: Text(EnglishText.of(context)!.Settings),
-                    value: 1,
-                  ),
-                ]),
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (context) => [
+                              PopupMenuItem(
+                                child: Text(AppTranslations.of(context)!
+                                    .text("menu_2_1")),
+                                value: 1,
+                              ),
+                              PopupMenuItem(
+                                child: Text(AppTranslations.of(context)!
+                                    .text("menu_2_2")),
+                                value: 2,
+                              )
+                            ])
+                    : PopupMenuButton(
+                onSelected: (result) {
+                  if (result == 2) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettingsScreen()),
+                    );
+                  }
+                },
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (context) => [
+                              PopupMenuItem(
+                                child: Text(AppTranslations.of(context)!
+                                    .text("menu_3_1")),
+                                value: 1,
+                              ),
+                              PopupMenuItem(
+                                child: Text(AppTranslations.of(context)!
+                                    .text("menu_3_2")),
+                                value: 2,
+                              ),
+                            ]),
           ],
           title: Text("WhatsApp"),
           bottom: TabBar(
-            onTap: (int selected){
+            onTap: (int selected) {
               setState(() {
-                _selectedIndex=selected;
-
+                _selectedIndex = selected;
               });
             },
             // controller: _tabController,
@@ -121,17 +145,17 @@ class _WhatsAppState extends State<WhatsApp> {
                   width: tabWidth,
                   height: 50,
                   alignment: Alignment.center,
-                  child: Text(EnglishText.of(context)!.Chats)),
+                  child: Text(AppTranslations.of(context)!.text("tab_chats"))),
               Container(
                   width: tabWidth,
                   height: 50,
                   alignment: Alignment.center,
-                  child: Text(EnglishText.of(context)!.Status)),
+                  child: Text(AppTranslations.of(context)!.text("tab_status"))),
               Container(
                   width: tabWidth,
                   height: 50,
                   alignment: Alignment.center,
-                  child: Text(EnglishText.of(context)!.Calls))
+                  child: Text(AppTranslations.of(context)!.text("tab_call"))),
             ],
           ),
         ),
@@ -139,7 +163,7 @@ class _WhatsAppState extends State<WhatsApp> {
           children: [
             CameraScreen(),
             ChatsListPage(),
-            StatusPage(),
+            StatusScreen(),
             CallsListPage()
           ],
         ),
